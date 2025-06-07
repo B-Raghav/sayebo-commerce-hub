@@ -2,8 +2,9 @@
 import { Button } from "@/components/ui/button";
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { LogOut, User, Store } from 'lucide-react';
+import { LogOut, User, Store, ShoppingCart, Search } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Badge } from "@/components/ui/badge";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -24,39 +25,85 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white shadow-md border-b">
+    <nav className="bg-white shadow-lg border-b-2 border-gray-100 sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
+          {/* Logo */}
           <div 
-            className="text-2xl font-bold text-blue-600 cursor-pointer"
+            className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent cursor-pointer hover:scale-105 transition-transform"
             onClick={() => navigate('/')}
           >
             Sayebo
           </div>
 
+          {/* Search Bar - Hidden on mobile */}
+          <div className="hidden md:flex flex-1 max-w-xl mx-8">
+            <div className="relative w-full">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <input
+                type="text"
+                placeholder="Search for products, brands and more..."
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
+          </div>
+
+          {/* Navigation Items */}
           <div className="flex items-center space-x-4">
             {user ? (
               <>
+                {/* Cart Icon - Only for users */}
+                {user.role === 'user' && (
+                  <Button
+                    variant="ghost"
+                    className="relative"
+                    onClick={() => navigate('/cart')}
+                  >
+                    <ShoppingCart className="h-5 w-5" />
+                    <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center bg-red-500">
+                      0
+                    </Badge>
+                  </Button>
+                )}
+                
+                {/* Dashboard Button */}
                 <Button
                   variant="ghost"
                   onClick={navigateToDashboard}
                   className="flex items-center gap-2"
                 >
                   {user.role === 'seller' ? <Store className="h-4 w-4" /> : <User className="h-4 w-4" />}
-                  {user.role === 'seller' ? 'Seller Dashboard' : 'Dashboard'}
+                  <span className="hidden md:inline">
+                    {user.role === 'seller' ? 'Seller Hub' : 'My Account'}
+                  </span>
                 </Button>
                 
+                {/* User Menu */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="flex items-center gap-2">
-                      <User className="h-4 w-4" />
-                      {user.name || user.email}
+                      <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white text-sm font-semibold">
+                        {user.name?.charAt(0)?.toUpperCase() || 'U'}
+                      </div>
+                      <span className="hidden md:inline text-sm">
+                        {user.name || user.email}
+                      </span>
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
+                  <DropdownMenuContent align="end" className="w-48">
                     <DropdownMenuItem onClick={navigateToDashboard}>
-                      {user.role === 'seller' ? 'Seller Dashboard' : 'Dashboard'}
+                      {user.role === 'seller' ? 'Seller Dashboard' : 'My Account'}
                     </DropdownMenuItem>
+                    {user.role === 'user' && (
+                      <>
+                        <DropdownMenuItem onClick={() => navigate('/orders')}>
+                          My Orders
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => navigate('/wishlist')}>
+                          Wishlist
+                        </DropdownMenuItem>
+                      </>
+                    )}
                     <DropdownMenuItem onClick={handleLogout}>
                       <LogOut className="h-4 w-4 mr-2" />
                       Logout
@@ -69,11 +116,13 @@ const Navbar = () => {
                 <Button 
                   variant="ghost" 
                   onClick={() => navigate('/login')}
+                  className="text-gray-700 hover:text-blue-600"
                 >
                   Login
                 </Button>
                 <Button 
                   onClick={() => navigate('/register')}
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
                 >
                   Sign Up
                 </Button>
