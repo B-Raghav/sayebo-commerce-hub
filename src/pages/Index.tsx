@@ -1,15 +1,14 @@
 
 import { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import Navbar from '@/components/layout/Navbar';
-import ProductCard from '@/components/products/ProductCard';
 import CategoryScroller from '@/components/layout/CategoryScroller';
 import HeroBanner from '@/components/layout/HeroBanner';
-import { Search, Filter, ShoppingCart, Star } from 'lucide-react';
+import { Search, Filter, ShoppingCart, Star, Heart } from 'lucide-react';
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from '@/hooks/use-toast';
@@ -23,63 +22,97 @@ const Index = () => {
   const [priceFilter, setPriceFilter] = useState('all');
   const [loading, setLoading] = useState(true);
 
-  // Enhanced mock data with more realistic products
+  // Mock products with ZAR pricing and South African context
   const mockProducts = [
     {
       id: '1',
-      title: 'Premium Wireless Headphones',
-      description: 'High-quality noise-canceling wireless headphones with 30-hour battery life',
-      price: 299.99,
-      originalPrice: 399.99,
-      discount: 25,
+      title: 'Samsung Galaxy A54 5G',
+      description: 'Latest smartphone with excellent camera and long battery life',
+      price: 8999,
+      originalPrice: 10999,
+      discount: 18,
       category: 'Electronics',
-      image: '/placeholder.svg',
+      image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400',
       rating: 4.5,
-      reviews: 1247,
+      reviews: 247,
       sellerId: 'seller1',
-      stock: 15
+      stock: 15,
+      badge: 'New'
     },
     {
       id: '2',
-      title: 'Organic Cotton T-Shirt',
-      description: 'Comfortable and sustainable organic cotton t-shirt in multiple colors',
-      price: 39.99,
-      originalPrice: 59.99,
-      discount: 33,
-      category: 'Clothing',
-      image: '/placeholder.svg',
-      rating: 4.2,
-      reviews: 856,
+      title: 'Traditional African Print Dress',
+      description: 'Beautiful handmade dress with authentic South African patterns',
+      price: 599,
+      originalPrice: 799,
+      discount: 25,
+      category: 'Fashion',
+      image: 'https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=400',
+      rating: 4.8,
+      reviews: 156,
       sellerId: 'seller2',
-      stock: 50
+      stock: 8,
+      badge: 'Popular'
     },
     {
       id: '3',
-      title: 'Smart Watch Series 5',
-      description: 'Advanced fitness tracking with heart rate monitoring and GPS',
-      price: 249.99,
-      originalPrice: 349.99,
-      discount: 29,
-      category: 'Electronics',
-      image: '/placeholder.svg',
+      title: 'Rooibos Tea Premium Pack',
+      description: 'Organic South African Rooibos tea, 100% natural and caffeine-free',
+      price: 299,
+      originalPrice: 399,
+      discount: 25,
+      category: 'Health',
+      image: 'https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=400',
       rating: 4.7,
-      reviews: 2341,
+      reviews: 89,
       sellerId: 'seller3',
-      stock: 8
+      stock: 25,
+      badge: 'Local'
     },
     {
       id: '4',
-      title: 'Home Coffee Maker',
-      description: 'Professional-grade coffee maker with built-in grinder',
-      price: 199.99,
-      originalPrice: 279.99,
-      discount: 29,
-      category: 'Home & Kitchen',
-      image: '/placeholder.svg',
-      rating: 4.3,
-      reviews: 543,
+      title: 'Handcrafted Wooden Coffee Table',
+      description: 'Beautiful solid wood coffee table made by local artisans',
+      price: 2599,
+      originalPrice: 3299,
+      discount: 21,
+      category: 'Home & Garden',
+      image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400',
+      rating: 4.6,
+      reviews: 34,
       sellerId: 'seller1',
-      stock: 12
+      stock: 5,
+      badge: 'Handmade'
+    },
+    {
+      id: '5',
+      title: 'Biltong Maker Pro',
+      description: 'Professional biltong maker for authentic South African dried meat',
+      price: 1899,
+      originalPrice: 2299,
+      discount: 17,
+      category: 'Home & Garden',
+      image: 'https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?w=400',
+      rating: 4.4,
+      reviews: 67,
+      sellerId: 'seller4',
+      stock: 12,
+      badge: 'Local Favorite'
+    },
+    {
+      id: '6',
+      title: 'Springbok Rugby Jersey',
+      description: 'Official Springboks rugby jersey - support the national team',
+      price: 1299,
+      originalPrice: 1599,
+      discount: 19,
+      category: 'Sports',
+      image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400',
+      rating: 4.9,
+      reviews: 203,
+      sellerId: 'seller2',
+      stock: 18,
+      badge: 'Official'
     }
   ];
 
@@ -113,9 +146,9 @@ const Index = () => {
                          product.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = categoryFilter === 'all' || product.category === categoryFilter;
     const matchesPrice = priceFilter === 'all' || 
-                        (priceFilter === 'under50' && product.price < 50) ||
-                        (priceFilter === '50to200' && product.price >= 50 && product.price <= 200) ||
-                        (priceFilter === 'over200' && product.price > 200);
+                        (priceFilter === 'under500' && product.price < 500) ||
+                        (priceFilter === '500to2000' && product.price >= 500 && product.price <= 2000) ||
+                        (priceFilter === 'over2000' && product.price > 2000);
     return matchesSearch && matchesCategory && matchesPrice;
   });
 
@@ -133,7 +166,7 @@ const Index = () => {
       
       <div className="container mx-auto px-4 py-8">
         {/* Search and Filter Section */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
           <div className="flex flex-col md:flex-row gap-4">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -141,7 +174,7 @@ const Index = () => {
                 placeholder="Search for products..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
+                className="pl-10 border-gray-300"
               />
             </div>
             <div className="flex items-center gap-2">
@@ -164,20 +197,22 @@ const Index = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Prices</SelectItem>
-                  <SelectItem value="under50">Under $50</SelectItem>
-                  <SelectItem value="50to200">$50 - $200</SelectItem>
-                  <SelectItem value="over200">Over $200</SelectItem>
+                  <SelectItem value="under500">Under R500</SelectItem>
+                  <SelectItem value="500to2000">R500 - R2,000</SelectItem>
+                  <SelectItem value="over2000">Over R2,000</SelectItem>
                 </SelectContent>
               </Select>
             </div>
           </div>
         </div>
 
-        {/* Hot Deals Section */}
+        {/* Featured Products Section */}
         <div className="mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-2xl font-bold text-gray-900">🔥 Hot Deals</h2>
-            <Button variant="outline" size="sm">View All</Button>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-3xl font-bold text-gray-900">Featured Products</h2>
+            <Button variant="outline" size="sm" className="border-blue-600 text-blue-600 hover:bg-blue-50">
+              View All
+            </Button>
           </div>
           
           {loading ? (
@@ -186,7 +221,7 @@ const Index = () => {
               <p className="mt-4 text-gray-600">Loading products...</p>
             </div>
           ) : filteredProducts.length === 0 ? (
-            <div className="text-center py-12 bg-white rounded-lg">
+            <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
               <div className="text-gray-400 mb-4">
                 <Search className="h-16 w-16 mx-auto" />
               </div>
@@ -196,7 +231,7 @@ const Index = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredProducts.map(product => (
-                <EnhancedProductCard 
+                <ProductCard 
                   key={product.id} 
                   product={product} 
                   onAddToCart={handleAddToCart}
@@ -210,10 +245,10 @@ const Index = () => {
   );
 };
 
-// Enhanced Product Card Component
-const EnhancedProductCard = ({ product, onAddToCart }) => {
+// Clean Product Card Component with ZAR pricing
+const ProductCard = ({ product, onAddToCart }) => {
   return (
-    <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+    <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-gray-200 bg-white">
       <div className="relative aspect-square overflow-hidden">
         <img
           src={product.image}
@@ -221,32 +256,37 @@ const EnhancedProductCard = ({ product, onAddToCart }) => {
           className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
         />
         {product.discount && (
-          <Badge className="absolute top-2 left-2 bg-red-500 text-white">
+          <Badge className="absolute top-3 left-3 bg-red-500 text-white font-semibold">
             -{product.discount}%
+          </Badge>
+        )}
+        {product.badge && (
+          <Badge className="absolute top-3 right-3 bg-blue-600 text-white font-semibold">
+            {product.badge}
           </Badge>
         )}
         <Button
           size="icon"
           variant="secondary"
-          className="absolute top-2 right-2 h-8 w-8 opacity-80 hover:opacity-100"
+          className="absolute bottom-3 right-3 h-8 w-8 bg-white/90 hover:bg-white"
         >
-          ❤️
+          <Heart className="h-4 w-4 text-gray-600" />
         </Button>
       </div>
       
       <CardContent className="p-4">
         <div className="flex justify-between items-start mb-2">
-          <Badge variant="secondary" className="text-xs">
+          <Badge variant="secondary" className="text-xs bg-gray-100 text-gray-700">
             {product.category}
           </Badge>
           <div className="flex items-center gap-1">
             <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-            <span className="text-xs text-gray-600">{product.rating}</span>
+            <span className="text-xs text-gray-600 font-medium">{product.rating}</span>
             <span className="text-xs text-gray-400">({product.reviews})</span>
           </div>
         </div>
         
-        <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 text-sm">
+        <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 text-sm leading-tight">
           {product.title}
         </h3>
         
@@ -254,33 +294,37 @@ const EnhancedProductCard = ({ product, onAddToCart }) => {
           {product.description}
         </p>
         
-        <div className="flex items-center gap-2 mb-3">
+        <div className="flex items-center gap-2 mb-4">
           <span className="text-lg font-bold text-green-600">
-            ${product.price}
+            R{product.price.toLocaleString()}
           </span>
           {product.originalPrice && (
             <span className="text-sm text-gray-500 line-through">
-              ${product.originalPrice}
+              R{product.originalPrice.toLocaleString()}
             </span>
           )}
         </div>
         
-        <div className="flex gap-2">
+        <div className="flex gap-2 mb-3">
           <Button 
-            className="flex-1" 
+            className="flex-1 bg-blue-600 hover:bg-blue-700" 
             size="sm"
             onClick={() => onAddToCart(product.id)}
           >
             <ShoppingCart className="h-3 w-3 mr-1" />
             Add to Cart
           </Button>
-          <Button size="sm" variant="outline" className="px-3">
-            Buy Now
+          <Button size="sm" variant="outline" className="px-3 border-gray-300 hover:bg-gray-50">
+            View
           </Button>
         </div>
         
-        <div className="mt-2 text-xs text-gray-500">
-          {product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
+        <div className="text-xs text-center">
+          {product.stock > 0 ? (
+            <span className="text-green-600 font-medium">{product.stock} in stock</span>
+          ) : (
+            <span className="text-red-600 font-medium">Out of stock</span>
+          )}
         </div>
       </CardContent>
     </Card>

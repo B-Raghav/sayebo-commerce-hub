@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,13 +25,14 @@ interface AddProductFormProps {
 
 const categories = [
   'Electronics',
-  'Clothing',
+  'Fashion',
   'Home & Garden',
   'Sports & Outdoors',
   'Books',
   'Beauty & Health',
-  'Toys & Games',
+  'Art & Crafts',
   'Automotive',
+  'Health',
   'Other'
 ];
 
@@ -100,13 +100,13 @@ const AddProductForm = ({ onProductAdded, editingProduct, onCancelEdit }: AddPro
   };
 
   return (
-    <Card>
+    <Card className="border border-gray-200">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+        <CardTitle className="flex items-center gap-2 text-gray-900">
           <Plus className="h-5 w-5" />
           {editingProduct ? 'Edit Product' : 'Add New Product'}
         </CardTitle>
-        <CardDescription>
+        <CardDescription className="text-gray-600">
           {editingProduct ? 'Update your product details' : 'Fill in the details to add a new product to your store'}
         </CardDescription>
       </CardHeader>
@@ -114,7 +114,7 @@ const AddProductForm = ({ onProductAdded, editingProduct, onCancelEdit }: AddPro
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="title">Product Title</Label>
+              <Label htmlFor="title" className="text-gray-700">Product Title</Label>
               <Input
                 id="title"
                 name="title"
@@ -122,30 +122,32 @@ const AddProductForm = ({ onProductAdded, editingProduct, onCancelEdit }: AddPro
                 value={formData.title}
                 onChange={handleInputChange}
                 required
+                className="border-gray-300"
               />
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="price">Price ($)</Label>
+              <Label htmlFor="price" className="text-gray-700">Price (ZAR)</Label>
               <Input
                 id="price"
                 name="price"
                 type="number"
-                step="0.01"
+                step="1"
                 min="0"
-                placeholder="0.00"
+                placeholder="0"
                 value={formData.price || ''}
                 onChange={handleInputChange}
                 required
+                className="border-gray-300"
               />
             </div>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="category">Category</Label>
+              <Label htmlFor="category" className="text-gray-700">Category</Label>
               <Select value={formData.category} onValueChange={(value) => setFormData(prev => ({ ...prev, category: value }))}>
-                <SelectTrigger>
+                <SelectTrigger className="border-gray-300">
                   <SelectValue placeholder="Select a category" />
                 </SelectTrigger>
                 <SelectContent>
@@ -159,7 +161,7 @@ const AddProductForm = ({ onProductAdded, editingProduct, onCancelEdit }: AddPro
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="image">Image URL</Label>
+              <Label htmlFor="image" className="text-gray-700">Image URL</Label>
               <Input
                 id="image"
                 name="image"
@@ -167,12 +169,13 @@ const AddProductForm = ({ onProductAdded, editingProduct, onCancelEdit }: AddPro
                 placeholder="https://example.com/image.jpg"
                 value={formData.image}
                 onChange={handleInputChange}
+                className="border-gray-300"
               />
             </div>
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description" className="text-gray-700">Description</Label>
             <Textarea
               id="description"
               name="description"
@@ -181,11 +184,12 @@ const AddProductForm = ({ onProductAdded, editingProduct, onCancelEdit }: AddPro
               onChange={handleInputChange}
               rows={4}
               required
+              className="border-gray-300"
             />
           </div>
           
           <div className="flex gap-2">
-            <Button type="submit" disabled={loading} className="flex-1">
+            <Button type="submit" disabled={loading} className="flex-1 bg-blue-600 hover:bg-blue-700">
               {loading ? (
                 <div className="flex items-center gap-2">
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
@@ -200,7 +204,7 @@ const AddProductForm = ({ onProductAdded, editingProduct, onCancelEdit }: AddPro
             </Button>
             
             {editingProduct && (
-              <Button type="button" variant="outline" onClick={onCancelEdit}>
+              <Button type="button" variant="outline" onClick={onCancelEdit} className="border-gray-300 hover:bg-gray-50">
                 Cancel
               </Button>
             )}

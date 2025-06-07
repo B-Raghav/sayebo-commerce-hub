@@ -25,12 +25,12 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white shadow-lg border-b-2 border-gray-100 sticky top-0 z-50">
+    <nav className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div 
-            className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent cursor-pointer hover:scale-105 transition-transform"
+            className="text-3xl font-bold text-blue-600 cursor-pointer hover:text-blue-700 transition-colors"
             onClick={() => navigate('/')}
           >
             Sayebo
@@ -42,8 +42,8 @@ const Navbar = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
               <input
                 type="text"
-                placeholder="Search for products, brands and more..."
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="Search for products..."
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50"
               />
             </div>
           </div>
@@ -56,11 +56,11 @@ const Navbar = () => {
                 {user.role === 'user' && (
                   <Button
                     variant="ghost"
-                    className="relative"
+                    className="relative hover:bg-gray-100"
                     onClick={() => navigate('/cart')}
                   >
-                    <ShoppingCart className="h-5 w-5" />
-                    <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center bg-red-500">
+                    <ShoppingCart className="h-5 w-5 text-gray-600" />
+                    <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center bg-blue-600 text-white text-xs">
                       0
                     </Badge>
                   </Button>
@@ -70,7 +70,7 @@ const Navbar = () => {
                 <Button
                   variant="ghost"
                   onClick={navigateToDashboard}
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-2 hover:bg-gray-100 text-gray-700"
                 >
                   {user.role === 'seller' ? <Store className="h-4 w-4" /> : <User className="h-4 w-4" />}
                   <span className="hidden md:inline">
@@ -81,11 +81,11 @@ const Navbar = () => {
                 {/* User Menu */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="flex items-center gap-2">
-                      <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white text-sm font-semibold">
+                    <Button variant="ghost" className="flex items-center gap-2 hover:bg-gray-100">
+                      <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
                         {user.name?.charAt(0)?.toUpperCase() || 'U'}
                       </div>
-                      <span className="hidden md:inline text-sm">
+                      <span className="hidden md:inline text-sm text-gray-700">
                         {user.name || user.email}
                       </span>
                     </Button>
@@ -116,13 +116,13 @@ const Navbar = () => {
                 <Button 
                   variant="ghost" 
                   onClick={() => navigate('/login')}
-                  className="text-gray-700 hover:text-blue-600"
+                  className="text-gray-700 hover:text-blue-600 hover:bg-blue-50"
                 >
                   Login
                 </Button>
                 <Button 
                   onClick={() => navigate('/register')}
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+                  className="bg-blue-600 hover:bg-blue-700 text-white"
                 >
                   Sign Up
                 </Button>

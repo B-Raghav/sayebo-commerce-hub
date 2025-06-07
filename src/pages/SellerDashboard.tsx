@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
@@ -101,33 +100,33 @@ const SellerDashboard = () => {
 
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <Card>
+          <Card className="border border-gray-200">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Products</CardTitle>
-              <Package className="h-4 w-4 text-muted-foreground" />
+              <CardTitle className="text-sm font-medium text-gray-700">Total Products</CardTitle>
+              <Package className="h-4 w-4 text-gray-500" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats.totalProducts}</div>
+              <div className="text-2xl font-bold text-gray-900">{stats.totalProducts}</div>
             </CardContent>
           </Card>
           
-          <Card>
+          <Card className="border border-gray-200">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Categories</CardTitle>
-              <Store className="h-4 w-4 text-muted-foreground" />
+              <CardTitle className="text-sm font-medium text-gray-700">Categories</CardTitle>
+              <Store className="h-4 w-4 text-gray-500" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats.categories}</div>
+              <div className="text-2xl font-bold text-gray-900">{stats.categories}</div>
             </CardContent>
           </Card>
           
-          <Card>
+          <Card className="border border-gray-200">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Inventory Value</CardTitle>
-              <DollarSign className="h-4 w-4 text-muted-foreground" />
+              <CardTitle className="text-sm font-medium text-gray-700">Inventory Value</CardTitle>
+              <DollarSign className="h-4 w-4 text-gray-500" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">${stats.totalRevenue.toFixed(2)}</div>
+              <div className="text-2xl font-bold text-green-600">R{stats.totalRevenue.toLocaleString()}</div>
             </CardContent>
           </Card>
         </div>

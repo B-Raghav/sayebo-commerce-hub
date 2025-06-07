@@ -27,8 +27,8 @@ const LoginForm = () => {
       const success = await login(email, password, activeTab as 'user' | 'seller');
       if (success) {
         toast({
-          title: "Login successful!",
-          description: `Welcome back!`,
+          title: "Welcome back!",
+          description: `Successfully logged in to Sayebo`,
         });
         
         // Navigate based on role
@@ -56,22 +56,22 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
-      <Card className="w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
+      <Card className="w-full max-w-md shadow-lg border border-gray-200">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold text-gray-900">Welcome Back</CardTitle>
-          <CardDescription>Sign in to your Sayebo account</CardDescription>
+          <CardDescription className="text-gray-600">Sign in to your Sayebo account</CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="user">User</TabsTrigger>
-              <TabsTrigger value="seller">Seller</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 bg-gray-100">
+              <TabsTrigger value="user" className="data-[state=active]:bg-white">User</TabsTrigger>
+              <TabsTrigger value="seller" className="data-[state=active]:bg-white">Seller</TabsTrigger>
             </TabsList>
             
             <form onSubmit={handleSubmit} className="space-y-4 mt-6">
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email" className="text-gray-700">Email</Label>
                 <Input
                   id="email"
                   type="email"
@@ -79,11 +79,12 @@ const LoginForm = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
+                  className="border-gray-300"
                 />
               </div>
               
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password" className="text-gray-700">Password</Label>
                 <Input
                   id="password"
                   type="password"
@@ -91,10 +92,11 @@ const LoginForm = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
+                  className="border-gray-300"
                 />
               </div>
               
-              <Button type="submit" className="w-full" disabled={loading}>
+              <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700" disabled={loading}>
                 {loading ? (
                   <div className="flex items-center gap-2">
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
