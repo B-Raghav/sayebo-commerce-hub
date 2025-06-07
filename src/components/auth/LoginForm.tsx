@@ -56,17 +56,17 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
-      <Card className="w-full max-w-md shadow-lg border border-gray-200">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blush-rose via-pink to-peach p-4">
+      <Card className="w-full max-w-md shadow-lg border border-pink-200 bg-white/95 backdrop-blur-sm">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-bold text-gray-900">Welcome Back</CardTitle>
           <CardDescription className="text-gray-600">Sign in to your Sayebo account</CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-2 bg-gray-100">
-              <TabsTrigger value="user" className="data-[state=active]:bg-white">User</TabsTrigger>
-              <TabsTrigger value="seller" className="data-[state=active]:bg-white">Seller</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 bg-peach">
+              <TabsTrigger value="user" className="data-[state=active]:bg-white data-[state=active]:text-sa-blue">User</TabsTrigger>
+              <TabsTrigger value="seller" className="data-[state=active]:bg-white data-[state=active]:text-sa-blue">Seller</TabsTrigger>
             </TabsList>
             
             <form onSubmit={handleSubmit} className="space-y-4 mt-6">
@@ -79,7 +79,7 @@ const LoginForm = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="border-gray-300"
+                  className="border-pink-300 focus:border-pink-500"
                 />
               </div>
               
@@ -92,11 +92,11 @@ const LoginForm = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="border-gray-300"
+                  className="border-pink-300 focus:border-pink-500"
                 />
               </div>
               
-              <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700" disabled={loading}>
+              <Button type="submit" className="w-full bg-sa-blue hover:bg-sa-blue/90" disabled={loading}>
                 {loading ? (
                   <div className="flex items-center gap-2">
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
@@ -114,7 +114,7 @@ const LoginForm = () => {
           
           <div className="mt-6 text-center text-sm">
             <span className="text-gray-600">Don't have an account? </span>
-            <Link to="/register" className="text-blue-600 hover:underline font-medium">
+            <Link to="/register" className="text-sa-blue hover:underline font-medium">
               Sign up here
             </Link>
           </div>

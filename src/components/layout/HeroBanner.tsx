@@ -1,18 +1,25 @@
 
 import { Button } from "@/components/ui/button";
-import { ArrowDown, Star } from 'lucide-react';
+import { ArrowDown, Star, Heart, Sparkles } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const HeroBanner = () => {
+  const navigate = useNavigate();
+
   return (
-    <div className="bg-gradient-to-r from-slate-50 to-gray-100 text-gray-900">
+    <div className="bg-gradient-to-br from-blush-rose via-pink to-peach text-gray-900">
       <div className="container mx-auto px-4 py-16">
         <div className="grid md:grid-cols-2 gap-8 items-center">
           <div>
+            <div className="flex items-center gap-2 mb-4">
+              <Sparkles className="h-6 w-6 text-pink-600" />
+              <span className="text-lg font-semibold text-pink-700">Women's Day Special</span>
+            </div>
             <h1 className="text-4xl md:text-6xl font-bold mb-4">
-              Welcome to <span className="text-blue-600">Sayebo</span>
+              Welcome to <span className="text-sa-blue">Sayebo</span>
             </h1>
             <p className="text-xl mb-6 text-gray-700">
-              Discover amazing products from trusted South African sellers
+              Celebrating South African women entrepreneurs and their amazing products
             </p>
             <div className="flex items-center gap-4 mb-6">
               <div className="flex items-center gap-1">
@@ -20,24 +27,36 @@ const HeroBanner = () => {
                   <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
                 ))}
               </div>
-              <span className="text-lg text-gray-600">Trusted by 10M+ customers</span>
+              <span className="text-lg text-gray-600">Trusted by 100K+ South Africans</span>
             </div>
             <div className="flex gap-4">
-              <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold">
+              <Button 
+                size="lg" 
+                className="bg-sa-blue hover:bg-sa-blue/90 text-white font-semibold"
+                onClick={() => navigate('/products')}
+              >
                 Shop Now
               </Button>
-              <Button size="lg" variant="outline" className="border-blue-600 text-blue-600 hover:bg-blue-50">
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="border-sa-blue text-sa-blue hover:bg-sa-blue hover:text-white"
+                onClick={() => navigate('/register?role=seller')}
+              >
                 Become a Seller
               </Button>
             </div>
           </div>
           
           <div className="relative">
-            <div className="bg-gradient-to-br from-blue-50 to-purple-50 backdrop-blur-sm rounded-lg p-8 border border-gray-200 shadow-lg">
+            <div className="bg-gradient-to-br from-light-gold via-peach to-pink backdrop-blur-sm rounded-lg p-8 border border-pink-200 shadow-lg">
               <div className="text-center">
-                <div className="text-3xl font-bold mb-2 text-gray-800">🎉 Special Offer</div>
-                <div className="text-xl mb-4 text-blue-600 font-semibold">Up to 70% OFF</div>
-                <div className="text-sm text-gray-600">on selected items</div>
+                <div className="flex items-center justify-center gap-2 mb-4">
+                  <Heart className="h-8 w-8 text-pink-600 fill-pink-600" />
+                  <div className="text-3xl font-bold text-gray-800">Women's Day</div>
+                </div>
+                <div className="text-2xl mb-4 text-sa-blue font-bold">Up to 70% OFF</div>
+                <div className="text-sm text-gray-600">on selected items from female entrepreneurs</div>
               </div>
             </div>
           </div>
