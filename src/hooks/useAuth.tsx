@@ -6,12 +6,13 @@ interface User {
   email: string;
   role: 'user' | 'seller';
   name?: string;
+  phone?: string;
 }
 
 interface AuthContextType {
   user: User | null;
   login: (email: string, password: string, role: 'user' | 'seller') => Promise<boolean>;
-  register: (email: string, password: string, role: 'user' | 'seller', name?: string) => Promise<boolean>;
+  register: (email: string, password: string, role: 'user' | 'seller', name?: string, phone?: string) => Promise<boolean>;
   logout: () => void;
   loading: boolean;
 }
@@ -50,14 +51,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const register = async (email: string, password: string, role: 'user' | 'seller', name?: string): Promise<boolean> => {
+  const register = async (email: string, password: string, role: 'user' | 'seller', name?: string, phone?: string): Promise<boolean> => {
     try {
       // Mock registration - replace with actual API call
       const mockUser = {
         id: Math.random().toString(36).substr(2, 9),
         email,
         role,
-        name: name || email.split('@')[0]
+        name: name || email.split('@')[0],
+        phone: phone || ''
       };
       
       setUser(mockUser);

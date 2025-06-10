@@ -1,5 +1,7 @@
+
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
+import { useProducts } from '@/hooks/useProducts';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '@/components/layout/Navbar';
 import AddProductForm from '@/components/products/AddProductForm';
@@ -22,8 +24,8 @@ interface Product {
 
 const SellerDashboard = () => {
   const { user, loading } = useAuth();
+  const { products, addProduct, updateProduct, deleteProduct, getProductsBySeller } = useProducts();
   const navigate = useNavigate();
-  const [products, setProducts] = useState<Product[]>([]);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
   useEffect(() => {
@@ -32,30 +34,24 @@ const SellerDashboard = () => {
     }
   }, [user, loading, navigate]);
 
-  useEffect(() => {
-    // Mock data for demonstration
-    const mockProducts = [
-      {
-        id: '1',
-        title: 'Premium Wireless Headphones',
-        description: 'High-quality noise-canceling wireless headphones',
-        price: 299.99,
-        category: 'Electronics',
-        image: '/placeholder.svg',
-        sellerId: user?.id || ''
-      }
-    ];
-    setProducts(mockProducts);
-  }, [user]);
+  const sellerProducts = user ? getProductsBySeller(user.id) : [];
 
   const handleProductAdded = (product: Product) => {
     if (editingProduct) {
       // Update existing product
-      setProducts(prev => prev.map(p => p.id === product.id ? product : p));
+      updateProduct(product.id, product);
       setEditingProduct(null);
+      toast({
+        title: "Product updated",
+        description: "Product has been updated successfully.",
+      });
     } else {
       // Add new product
-      setProducts(prev => [...prev, { ...product, sellerId: user?.id || '' }]);
+      addProduct({ ...product, sellerId: user?.id || '' });
+      toast({
+        title: "Product added",
+        description: "Product has been added to your store.",
+      });
     }
   };
 
@@ -64,7 +60,7 @@ const SellerDashboard = () => {
   };
 
   const handleDelete = (productId: string) => {
-    setProducts(prev => prev.filter(p => p.id !== productId));
+    deleteProduct(productId);
     toast({
       title: "Product deleted",
       description: "Product has been removed from your store.",
@@ -72,9 +68,9 @@ const SellerDashboard = () => {
   };
 
   const stats = {
-    totalProducts: products.length,
-    totalRevenue: products.reduce((sum, p) => sum + p.price, 0),
-    categories: new Set(products.map(p => p.category)).size
+    totalProducts: sellerProducts.length,
+    totalRevenue: sellerProducts.reduce((sum, p) => sum + p.price, 0),
+    categories: new Set(sellerProducts.map(p => p.category)).size
   };
 
   if (loading) {
@@ -146,7 +142,7 @@ const SellerDashboard = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                {products.length === 0 ? (
+                {sellerProducts.length === 0 ? (
                   <div className="text-center py-12">
                     <Package className="h-16 w-16 mx-auto text-gray-400 mb-4" />
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">No products yet</h3>
@@ -154,7 +150,7 @@ const SellerDashboard = () => {
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {products.map(product => (
+                    {sellerProducts.map(product => (
                       <ProductCard
                         key={product.id}
                         product={product}

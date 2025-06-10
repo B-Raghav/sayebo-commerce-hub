@@ -14,6 +14,7 @@ const RegisterForm = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phone: '',
     password: '',
     confirmPassword: ''
   });
@@ -49,7 +50,8 @@ const RegisterForm = () => {
         formData.email, 
         formData.password, 
         activeTab as 'user' | 'seller',
-        formData.name
+        formData.name,
+        formData.phone
       );
       
       if (success) {
@@ -58,11 +60,11 @@ const RegisterForm = () => {
           description: `Welcome to Sayebo!`,
         });
         
-        // Navigate based on role
+        // Navigate based on role - fixed redirect to correct routes
         if (activeTab === 'seller') {
-          navigate('/seller-dashboard');
+          navigate('/dashboard/seller');
         } else {
-          navigate('/user-dashboard');
+          navigate('/dashboard/user');
         }
       } else {
         toast({
@@ -119,6 +121,20 @@ const RegisterForm = () => {
                   type="email"
                   placeholder="Enter your email"
                   value={formData.email}
+                  onChange={handleInputChange}
+                  required
+                  className="border-pink-300 focus:border-pink-500"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="phone">Phone Number</Label>
+                <Input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  placeholder="Enter your phone number"
+                  value={formData.phone}
                   onChange={handleInputChange}
                   required
                   className="border-pink-300 focus:border-pink-500"
